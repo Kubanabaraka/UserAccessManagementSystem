@@ -1,0 +1,84 @@
+<%
+    String _role = (session != null) ? (String) session.getAttribute("role") : null;
+    String _username = (session != null) ? (String) session.getAttribute("username") : null;
+    String _activePage = (String) request.getAttribute("activePage");
+    if (_activePage == null) _activePage = "";
+    boolean _loggedIn = _role != null && _username != null;
+%>
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="dashboard.jsp">
+            <span class="brand-icon"><i data-lucide="shield"></i></span>
+            AccessManager
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto">
+                <% if (_loggedIn) { %>
+                    <li class="nav-item">
+                        <a class="nav-link <%= "dashboard".equals(_activePage) ? "active" : "" %>" href="dashboard.jsp">
+                            <i data-lucide="layout-dashboard"></i> Dashboard
+                        </a>
+                    </li>
+                    <% if ("Admin".equals(_role)) { %>
+                        <li class="nav-item">
+                            <a class="nav-link <%= "software".equals(_activePage) ? "active" : "" %>" href="SoftwareServlet?action=list">
+                                <i data-lucide="package"></i> Software
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= "users".equals(_activePage) ? "active" : "" %>" href="AdminUserServlet?action=list">
+                                <i data-lucide="users"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= "allrequests".equals(_activePage) ? "active" : "" %>" href="AdminRequestServlet?action=list">
+                                <i data-lucide="file-text"></i> All Requests
+                            </a>
+                        </li>
+                    <% } else if ("Manager".equals(_role)) { %>
+                        <li class="nav-item">
+                            <a class="nav-link <%= "pending".equals(_activePage) ? "active" : "" %>" href="PendingRequestsServlet">
+                                <i data-lucide="file-text"></i> Pending Requests
+                            </a>
+                        </li>
+                    <% } else if ("Employee".equals(_role)) { %>
+                        <li class="nav-item">
+                            <a class="nav-link <%= "request".equals(_activePage) ? "active" : "" %>" href="RequestServlet?action=form">
+                                <i data-lucide="file-text"></i> Request Access
+                            </a>
+                        </li>
+                    <% } %>
+                <% } %>
+            </ul>
+            <ul class="navbar-nav">
+                <% if (_loggedIn) { %>
+                    <li class="nav-item">
+                        <span class="nav-link user-badge">
+                            <i data-lucide="user"></i> <%= _username %> &middot; <%= _role %>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="LogoutServlet" title="Logout">
+                            <i data-lucide="log-out"></i> Logout
+                        </a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link <%= "login".equals(_activePage) ? "active" : "" %>" href="login.jsp">
+                            <i data-lucide="log-in"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= "signup".equals(_activePage) ? "active" : "" %>" href="signup.jsp">
+                            <i data-lucide="user-plus"></i> Sign Up
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
