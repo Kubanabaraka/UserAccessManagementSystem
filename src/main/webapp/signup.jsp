@@ -1,81 +1,89 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("activePage", "signup"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - User Access Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; }
-        .signup-card { border: none; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .signup-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px 15px 0 0; padding: 30px; text-align: center; }
-        .signup-header i { font-size: 3rem; margin-bottom: 10px; }
-        .btn-success { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border: none; color: #333; font-weight: bold; }
-        .btn-success:hover { background: linear-gradient(135deg, #38d96e 0%, #30e0c2 100%); color: #333; }
-    </style>
+    <title>Sign Up - AccessManager</title>
+    <%@ include file="WEB-INF/jsp/partials/head.jspf" %>
 </head>
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card signup-card">
-                    <div class="signup-header">
-                        <i class="fas fa-user-plus"></i>
-                        <h3>Create Account</h3>
-                        <p class="mb-0">Register as a new Employee</p>
-                    </div>
-                    <div class="card-body p-4">
-                        <% String error = request.getParameter("error"); %>
-                        <% if (error != null && !error.isEmpty()) { %>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fas fa-exclamation-circle me-2"></i><%= error %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        <% } %>
-                        <form action="SignUpServlet" method="POST" onsubmit="return validateForm()">
-                            <div class="mb-3">
-                                <label for="username" class="form-label"><i class="fas fa-user me-1"></i> Username</label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                       placeholder="Choose a username (min 3 characters)" required minlength="3">
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label"><i class="fas fa-lock me-1"></i> Password</label>
-                                <input type="password" class="form-control" id="password" name="password"
-                                       placeholder="Create a password (min 6 characters)" required minlength="6">
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPassword" class="form-label"><i class="fas fa-lock me-1"></i> Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                       placeholder="Re-enter your password" required>
-                                <div id="passwordError" class="text-danger mt-1" style="display:none;">Passwords do not match</div>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100 py-2">
-                                <i class="fas fa-user-plus me-2"></i>Sign Up
-                            </button>
-                        </form>
-                        <hr>
-                        <p class="text-center mb-0">
-                            Already have an account? <a href="login.jsp" class="text-decoration-none">Login here</a>
-                        </p>
+<body class="auth-body">
+    <%@ include file="WEB-INF/jsp/partials/header.jspf" %>
+
+    <main class="app-main">
+        <div class="container auth-wrapper">
+            <div class="row justify-content-center w-100">
+                <div class="col-lg-5 col-md-7 col-sm-10">
+                    <div class="card auth-card">
+                        <div class="auth-header">
+                            <span class="auth-icon"><i data-lucide="user-plus"></i></span>
+                            <h3>Create Account</h3>
+                            <p class="mb-0 opacity-75">Register as a new Employee</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <% String error = request.getParameter("error"); %>
+                            <% if (error != null && !error.isEmpty()) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i data-lucide="alert-circle" class="me-2"></i><%= error %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            <% } %>
+
+                            <form action="SignUpServlet" method="POST" id="signupForm">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">
+                                        <i data-lucide="user"></i> Username
+                                    </label>
+                                    <input type="text" class="form-control" id="username" name="username"
+                                           placeholder="Choose a username (min 3 chars)" required minlength="3" autofocus>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">
+                                        <i data-lucide="lock"></i> Password
+                                    </label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                           placeholder="Create a password (min 6 chars)" required minlength="6">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">
+                                        <i data-lucide="lock"></i> Confirm Password
+                                    </label>
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                           placeholder="Re-enter your password" required>
+                                    <div id="passwordError" class="text-danger mt-1 small d-none">
+                                        <i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Passwords do not match
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2 mt-2">
+                                    <i data-lucide="user-plus"></i> Create Account
+                                </button>
+                            </form>
+                            <hr>
+                            <p class="text-center mb-0 auth-link">
+                                Already have an account? <a href="login.jsp">Sign in</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </main>
+
+    <%@ include file="WEB-INF/jsp/partials/footer.jspf" %>
     <script>
-        function validateForm() {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             var pwd = document.getElementById('password').value;
             var cpwd = document.getElementById('confirmPassword').value;
+            var errEl = document.getElementById('passwordError');
             if (pwd !== cpwd) {
-                document.getElementById('passwordError').style.display = 'block';
-                return false;
+                e.preventDefault();
+                errEl.classList.remove('d-none');
+                document.getElementById('confirmPassword').focus();
+            } else {
+                errEl.classList.add('d-none');
             }
-            document.getElementById('passwordError').style.display = 'none';
-            return true;
-        }
+        });
     </script>
 </body>
 </html>
