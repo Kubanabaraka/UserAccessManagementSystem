@@ -1,0 +1,17 @@
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/filter/AuthenticationFilter.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/LogoutServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/dao/RequestDAO.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/dao/UserDAO.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/RequestServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/ApprovalServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/util/DBUtil.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/PendingRequestsServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/SignUpServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/model/User.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/dao/SoftwareDAO.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/AdminUserServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/LoginServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/AdminRequestServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/SoftwareServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/model/Software.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/model/Request.java
