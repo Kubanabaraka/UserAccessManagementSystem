@@ -28,7 +28,9 @@ public class AdminRequestServlet extends HttpServlet {
 
         if (!checkAdmin(request, response)) return;
 
+        List<Request> pendingRequests = requestDAO.findPending();
         List<Request> allRequests = requestDAO.findAll();
+        request.setAttribute("pendingRequests", pendingRequests);
         request.setAttribute("allRequests", allRequests);
         request.getRequestDispatcher("allRequests.jsp").forward(request, response);
     }
