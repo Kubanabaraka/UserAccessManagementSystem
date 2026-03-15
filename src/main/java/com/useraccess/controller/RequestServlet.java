@@ -88,10 +88,13 @@ public class RequestServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
+        List<Software> softwareList = softwareDAO.findAll();
+        request.setAttribute("softwareList", softwareList);
+
         List<Request> myRequests = requestDAO.findByUserId(user.getId());
         request.setAttribute("myRequests", myRequests);
 
-        request.getRequestDispatcher("myRequests.jsp").forward(request, response);
+        request.getRequestDispatcher("requestAccess.jsp").forward(request, response);
     }
 
     private void submitRequest(HttpServletRequest request, HttpServletResponse response)
