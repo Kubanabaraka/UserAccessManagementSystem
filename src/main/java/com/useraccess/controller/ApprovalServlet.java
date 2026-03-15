@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * ApprovalServlet - handles approval/rejection of access requests.
- * Only accessible by Manager users.
+ * Accessible by Manager and Admin users.
  */
 @WebServlet(name = "ApprovalServlet", urlPatterns = {"/ApprovalServlet"})
 public class ApprovalServlet extends HttpServlet {
@@ -24,15 +24,28 @@ public class ApprovalServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Check Manager role
-        if (!checkManager(request, response)) return;
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("login.jsp?error=Please+log+in");
+            return;
+        }
+        User user = (User) session.getAttribute("user");
+        String role = user.getRole();
+
+        if (!"Manager".equals(role) && !"Admin".equals(role)) {
+            response.sendRedirect("login.jsp?error=Unauthorized+access");
+            return;
+        }
+
+        // Determine redirect target based on role
+        String redirectTarget = "Admin".equals(role) ? "AdminRequestServlet" : "PendingRequestsServlet";
 
         String requestIdStr = request.getParameter("request_id");
         String action = request.getParameter("action");
 
         // Validation
         if (requestIdStr == null || requestIdStr.trim().isEmpty()) {
-            response.sendRedirect("PendingRequestsServlet?error=Invalid+request+ID");
+            response.sendRedirect(redirectTarget + "?error=Invalid+request+ID");
             return;
         }
 
@@ -40,7 +53,7 @@ public class ApprovalServlet extends HttpServlet {
         try {
             requestId = Integer.parseInt(requestIdStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("PendingRequestsServlet?error=Invalid+request+ID");
+            response.sendRedirect(redirectTarget + "?error=Invalid+request+ID");
             return;
         }
 
@@ -51,7 +64,7 @@ public class ApprovalServlet extends HttpServlet {
         } else if ("Reject".equals(action)) {
             newStatus = "Rejected";
         } else {
-            response.sendRedirect("PendingRequestsServlet?error=Invalid+action");
+            response.sendRedirect(redirectTarget + "?error=Invalid+action");
             return;
         }
 
@@ -59,24 +72,9 @@ public class ApprovalServlet extends HttpServlet {
         boolean updated = requestDAO.updateStatus(requestId, newStatus);
 
         if (updated) {
-            response.sendRedirect("PendingRequestsServlet?message=Request+has+been+" + newStatus.toLowerCase());
+            response.sendRedirect(redirectTarget + "?message=Request+has+been+" + newStatus.toLowerCase());
         } else {
-            response.sendRedirect("PendingRequestsServlet?error=Error+processing+request");
+            response.sendRedirect(redirectTarget + "?error=Error+processing+request");
         }
-    }
-
-    private boolean checkManager(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("login.jsp?error=Please+log+in");
-            return false;
-        }
-        User user = (User) session.getAttribute("user");
-        if (!"Manager".equals(user.getRole())) {
-            response.sendRedirect("login.jsp?error=Unauthorized+access.+Manager+role+required");
-            return false;
-        }
-        return true;
     }
 }
