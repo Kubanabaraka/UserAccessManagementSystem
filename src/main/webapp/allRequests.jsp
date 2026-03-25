@@ -37,8 +37,57 @@
                 </div>
             <% } %>
 
+            <!-- Pending Requests Requiring Action -->
+            <div class="card p-4 mb-4">
+                <h4 class="section-title"><i data-lucide="clock"></i> Pending Requests</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Employee</th>
+                                <th>Software</th>
+                                <th>Access</th>
+                                <th>Reason</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="req" items="${pendingRequests}" varStatus="loop">
+                                <tr>
+                                    <td>${loop.count}</td>
+                                    <td><strong>${req.username}</strong></td>
+                                    <td>${req.softwareName}</td>
+                                    <td>
+                                        <span class="badge-access badge-access-${req.accessType == 'Read' ? 'read' : req.accessType == 'Write' ? 'write' : 'admin'}">${req.accessType}</span>
+                                    </td>
+                                    <td>${req.reason}</td>
+                                    <td><small>${req.createdAt}</small></td>
+                                    <td>
+                                        <form action="ApprovalServlet" method="POST" class="inline-form">
+                                            <input type="hidden" name="request_id" value="${req.id}">
+                                            <button type="submit" name="action" value="Approve" class="btn btn-sm btn-success me-1" title="Approve">
+                                                <i data-lucide="check-circle"></i> Approve
+                                            </button>
+                                            <button type="submit" name="action" value="Reject" class="btn btn-sm btn-outline-delete" title="Reject">
+                                                <i data-lucide="x-circle"></i> Reject
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty pendingRequests}">
+                                <tr><td colspan="7" class="text-center text-muted py-4">No pending requests at this time.</td></tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- All Requests History -->
             <div class="card p-4">
-                <h4 class="section-title"><i data-lucide="file-text"></i> All Access Requests</h4>
+                <h4 class="section-title"><i data-lucide="archive"></i> All Access Requests</h4>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
