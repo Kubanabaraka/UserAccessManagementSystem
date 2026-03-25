@@ -11,6 +11,7 @@
 /home/baraka/UserAccessManagement/src/main/java/com/useraccess/dao/SoftwareDAO.java
 /home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/AdminUserServlet.java
 /home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/LoginServlet.java
+/home/baraka/UserAccessManagement/src/main/java/com/useraccess/listener/DatabaseInitializationListener.java
 /home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/AdminRequestServlet.java
 /home/baraka/UserAccessManagement/src/main/java/com/useraccess/controller/SoftwareServlet.java
 /home/baraka/UserAccessManagement/src/main/java/com/useraccess/model/Software.java
